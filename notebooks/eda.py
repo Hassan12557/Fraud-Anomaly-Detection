@@ -30,3 +30,31 @@ print(df.dtypes)
 
 print("\nStatistical summary:")
 print(df.describe())
+
+class_counts = df["Class"].value_counts().sort_index()
+
+class_percentages = (
+    df["Class"]
+    .value_counts(normalize=True)
+    .sort_index() * 100
+)
+
+distribution = pd.DataFrame({
+    "Transaction Count": class_counts,
+    "Percentage": class_percentages
+})
+
+print(distribution)
+plt.figure(figsize=(8, 5))
+
+sns.barplot(
+    x=class_counts.index,
+    y=class_counts.values
+)
+
+plt.title("Legitimate vs Fraudulent Transactions")
+plt.xlabel("Class (0 = Legitimate, 1 = Fraud)")
+plt.ylabel("Number of Transactions")
+plt.xticks([0, 1], ["Legitimate", "Fraud"])
+
+plt.show()
