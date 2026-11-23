@@ -89,3 +89,16 @@ print(
     "Identical feature groups with conflicting labels:",
     len(conflicting_groups)
 )
+#Third: Compare the dataset before and after deduplication
+#Do this as an experiment only. Do not overwrite your processed dataset.
+df_without_duplicates = df.drop_duplicates()
+
+print("Original rows:", len(df))
+print("Rows after deduplication:",
+      len(df_without_duplicates))
+
+print("\nOriginal class distribution:")
+print(df["Class"].value_counts())
+
+print("\nDeduplicated class distribution:")
+print(df_without_duplicates["Class"].value_counts())
