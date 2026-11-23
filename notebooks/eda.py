@@ -58,3 +58,34 @@ plt.ylabel("Number of Transactions")
 plt.xticks([0, 1], ["Legitimate", "Fraud"])
 
 plt.show()
+
+#Investigate the 1081 duplicate rows
+#First: Count duplicates by class
+duplicate_rows = df[df.duplicated(keep=False)]
+
+print("Rows involved in duplicate groups:",
+      len(duplicate_rows))
+
+print("\nDuplicate rows by class:")
+
+print(
+    duplicate_rows["Class"]
+    .value_counts()
+)
+#Second: Investigate identical features with different labels
+#We should also ask whether identical transaction features have ever been assigned conflicting fraud labels
+feature_columns = [
+    col for col in df.columns if col != "Class"
+]
+
+label_counts = (
+    df.groupby(feature_columns, dropna=False)["Class"]
+    .nunique()
+)
+
+conflicting_groups = label_counts[label_counts > 1]
+
+print(
+    "Identical feature groups with conflicting labels:",
+    len(conflicting_groups)
+)
